@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Home</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="favicon.png" rel="shortcut icon" type="image/x-icon" />
+</head>
+
+<body>
+    <div id="search">
+        <input id="search-field" type="text" name="search-field" onkeypress="return search(event)" />
+    </div>
+    <div class="container">
+        <div id="clock"></div>
+        <div class="weather-container">
+            <div class="row">
+                <div id="weather-description" class="inline"></div>
+                <div class="inline"></div>
+                <div id="temp" class="inline"></div>
+            </div>
+        </div>
+        <div class="bookmark-container">
+            <div class="bookmark-set">
+                <div class="bookmark-title">Daily</div>
+                <div class="bookmark-inner-container">
+                    <a class="bookmark" href="https://www.reddit.com/r/unixporn/" target="_blank">Unix Porn</a>
+                    <a class="bookmark" href="https://github.com/" target="_blank">Github</a>
+                    <a class="bookmark" href="https://sendmanbot.github.io/sendman/index.html" target="_blank">Send Man</a>
+                    <a class="bookmark" href="https://sendmanbot.github.io/anity/index.html#/" target="_blank">Anity</a>
+                </div>
+            </div>
+            <div class="bookmark-set">
+                <div class="bookmark-title">Media</div>
+                <div class="bookmark-inner-container">
+                    <a class="bookmark" href="https://youtube.com" target="_blank">Youtube</a>
+                    <a class="bookmark" href="https://toonily.com/" target="_blank">Toonily</a>
+                    <a class="bookmark" href="https://crunchyroll.com" target="_blank">Crunchyroll</a>
+                    <a class="bookmark" href="https://goyabu.com/" target="_blank">Goyabu Animes</a>
+                </div>
+            </div>
+            <div class="bookmark-set">
+                <div class="bookmark-title">3D</div>
+                <div class="bookmark-inner-container">
+                    <a class="bookmark" href="https://texturehaven.com/" target="_blank">Texture Haven</a>
+                    <a class="bookmark" href="https://3dtextures.me/" target="_blank">3D Textures</a>
+                    <a class="bookmark" href="https://hdrihaven.com/" target="_blank">HDRI Haven</a>
+                    <a class="bookmark" href="https://www.blendernation.com/" target="_blank">Blender Nation</a>
+                </div>
+            </div>
+            <div class="bookmark-set">
+                <div class="bookmark-title">Social</div>
+                <div class="bookmark-inner-container">
+                    <a class="bookmark" href="https://web.telegram.org/#/im" target="_blank">Telegram</a>
+                    <a class="bookmark" href="https://facebook.com" target="_blank">Facebook</a>
+                    <a class="bookmark" href="https://web.whatsapp.com/" target="_blank">Whatsapp</a>
+                    <a class="bookmark" href="https://www.reddit.com/" target="_blank">Reddit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        var getHTML = function (url, callback) {
+            //feature detection
+            if (!window.XMLHttpRequest) return;
+
+            //create new request
+            var zz = new XMLHttpRequest();
+
+            //setup callback
+            zz.onload = function () {
+
+                if (callback && typeof (callback) === 'function') {
+                    callback(this.responseXML);
+                }
+            }
+
+            // GET the HTML
+            zz.open("GET", url);
+            zz.responseType = "document";
+            zz.send();
+        };
+
+        var ur = "https://darksky.net/forecast/-1.4506,-48.4682/ca12/en";
+
+        console.log(getHTML(ur, function (response) {
+            var someElem = document.querySelector('');
+            var otherElem = response.querySelector('');
+            someElem.innerHTML = otherElem.innerHTML;
+        }));
+
+        // Search on enter key event
+        function search(e) {
+            if (e.keyCode == 13) {
+                var val = document.getElementById("search-field").value;
+                window.location.replace("https://google.com/search?q=" + val);
+            }
+        }
+        // Get current time and format
+        function getTime() {
+            let date = new Date(),
+                min = date.getMinutes(),
+                sec = date.getSeconds(),
+                hour = date.getHours();
+
+            return "" +
+                (hour < 10 ? ("0" + hour) : hour) + ":" +
+                (min < 10 ? ("0" + min) : min) + ":" +
+                (sec < 10 ? ("0" + sec) : sec);
+        }
+
+        window.onload = () => {
+            let xhr = new XMLHttpRequest();
+            // Request to open weather map
+            xhr.open('GET', 'https://api.openweathermap.org/data/2.5/weather?lat=-1.4041&lon=-48.4617&units=imperial&appid=e5b292ae2f9dae5f29e11499c2d82ece');
+            xhr.onload = () => {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        let json = JSON.parse(xhr.responseText);
+                        console.log(json);
+                        document.getElementById("temp").innerHTML = ((json.main.temp.toFixed(0) - 32) / 1.8).toFixed(0) + "° C ";
+                        document.getElementById("weather-description").innerHTML = json.weather[0].description;
+                    } else {
+                        console.log('error msg: ' + xhr.status);
+                    }
+                }
+            }
+            xhr.send();
+            //'http://api.openweathermap.org/data/2.5/weather?id=4737316&units=imperial&appid=e5b292ae2f9dae5f29e11499c2d82ece'  
+            // Set up the clock
+            document.getElementById("clock").innerHTML = getTime();
+            // Set clock interval to tick clock
+            setInterval(() => {
+                document.getElementById("clock").innerHTML = getTime();
+            }, 100);
+        }
+
+        document.addEventListener("keydown", event => {
+            if (event.keyCode == 32) {          // Spacebar code to open search
+                document.getElementById('search').style.display = 'flex';
+                document.getElementById('search-field').focus();
+            } else if (event.keyCode == 27) {   // Esc to close search
+                document.getElementById('search-field').value = '';
+                document.getElementById('search-field').blur();
+                document.getElementById('search').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>

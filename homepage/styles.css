@@ -1,0 +1,126 @@
+:root {
+	--color-background:  #A7B09B;
+	--color-foreground:  #7D8E83;
+	--color-widgetsBackground: #cbd5cb;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
+
+body {
+    background-color: var(--color-background);
+    margin: 0px;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#clock {
+    font-family: sans-serif;
+    font-size: 3.5rem;
+    font-weight: 600;
+    font-family: "Roboto Mono";
+    color: var(--color-foreground);
+    margin-bottom: .25em;
+}
+
+#search {
+    width: 100%;
+    height: 100vh;
+    background-color: var(--color-widgetsBackground);
+    display: none;
+    position: absolute;
+    box-sizing: border-box;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#search-field {
+    width: 90%;
+    padding: .75em 1em;
+    box-sizing: border-box;
+    background-color: var(--color-widgetsBackground);
+    border: solid 0px var(--color-widgetsBackground);
+    font-family: "Roboto Mono";
+    font-size: 7rem;
+    color: var(--color-foreground);
+    outline: none;
+    border-radius: 3px;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.weather-container {
+    width: 35%;
+    background-color: var(--color-widgetsBackground);
+    padding: 0.4em;
+    border-radius: 3px;
+    font-family: "Roboto Mono";
+    font-size: 2em;
+    color: var(--color-foreground);
+    text-align: center;
+}
+.inline {
+    display: inline-block;
+}
+
+.bookmark-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 50%;
+    margin: 1em 0em;
+}
+
+@media only screen and (max-width: 960px) {
+    .container {
+        height: auto;
+    }
+    #clock {
+        margin-top: 1em;
+    }
+    .container > .bookmark-container {
+        flex-direction: column;
+        width: 60%;
+    }
+    .bookmark-container > .bookmark-set {
+        width: auto;
+        margin: 1em 0em;
+    }
+}
+.bookmark-set{
+    padding: 1em;
+    background-color: var(--color-widgetsBackground);
+    border-radius: 3px;
+    font-family: "Roboto Mono";
+    font-size: .9rem;
+    width: 25%;
+    height: 10em;
+    margin: 0em .5em;
+}
+.bookmark-inner-container {
+    overflow-y: auto;
+    height: 80%;
+    vertical-align: top;    
+}
+.bookmark-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--color-foreground);
+    margin: 0em 0em .35em 0em;
+}
+.bookmark {
+    text-decoration: none;
+    color: var(--color-foreground);
+    display:block;
+    margin: .5em 0em;
+}
+.bookmark:hover {
+    color: var(--color-background);
+}
